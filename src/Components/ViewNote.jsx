@@ -14,19 +14,13 @@ const ViewNote = () => {
     return(
         <div className="p-5 flex flex-col gap-10">
            
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center justify-center">
                 <input type="text"
                     placeholder="Write your Title here"
                     value={title}
                     className="h-10 min-w-[350px] px-3 bg-neutral-950 rounded-xl"
                     disabled
                 />
-
-                <button>
-                    <Link  to={`/?NoteID=${note._id}`}>
-                        Edit
-                    </Link>
-                </button>
             </div>
 
             <div className="flex justify-center">
@@ -37,6 +31,13 @@ const ViewNote = () => {
                     rows={20}
                     disabled
                 />
+            </div>
+            <div className="flex justify-center">
+                <button className="bg-amber-900 text-white px-4 py-2 rounded-lg">
+                    <Link to={`/?NoteID=${note._id}`}>
+                        Edit
+                    </Link>
+                </button>
             </div>
             
         </div>

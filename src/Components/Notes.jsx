@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RemoveFromNotes } from "../redux/noteslice";
 import NoteBlock from "./NoteBlock";
 
-
 const Notes = () => {
 
     const notes = useSelector((states) => states.note.notes);
@@ -16,11 +15,6 @@ const Notes = () => {
     )
 
     const [ShareActive, setShareActive] = useState(true);
-
-
-    
-        
-    
     return(
         <div className="p-5 flex flex-col gap-10">
             <div>
@@ -49,7 +43,5 @@ const Notes = () => {
             </div>  
         </div>
     )
-    
 } 
-    
-    export default Notes
+export default Notes
