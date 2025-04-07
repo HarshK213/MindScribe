@@ -12,17 +12,10 @@ import {
 } from "react-share";
 import { Link } from "react-router";
 
-
-
-
 const NoteBlock = ({ note }) => {
-
   const shareURL = `http://localhost:5173/notes/${note._id}`;
-
   const title = `Sharing notes \n Title : ${note.title}`;
-
   const dispatch = useDispatch();
-
   const [isActive, setisActive] = useState(false);
 
   const handleCopy = (text) => {
@@ -35,125 +28,103 @@ const NoteBlock = ({ note }) => {
   };
 
   const handleShare = () => {
-    isActive ? setisActive(false) : setisActive(true);
+    setisActive(!isActive);
   };
-  
-  return (
-    <div
-      className={`${isActive ? "h-[210px]" : "h-[150px]"} w-[900px] my-4 flex flex-col items-center border-[2px] rounded-2xl border-[#ffdbdb]`}
-    >
-      {/* Info Bar */}
-      <div className="h-[150px] w-[900px] p-4 flex justify-between">
-        {/* Left Part having title and content */}
-        <div className="flex flex-col justify-evenly w-[60%]">
-          {/* For Title */}
-          <div className="text-5xl font-bold">{note.title}</div>
 
-          {/* For Content */}
-          <div className="text-sm">{note.content}</div>
+  return (
+    <div className="w-full mb-4 rounded-lg overflow-hidden border border-gray-700">
+      <div className="bg-neutral-900 p-4 relative">
+        {/* Note Header with timestamp */}
+        <div className="flex justify-between items-start mb-2">
+          <h2 className="text-xl font-bold break-words max-w-[70%]">{note.title}</h2>
+          <span className="text-xs text-gray-400">{note.createdAt}</span>
         </div>
 
-        {/* Right part having button and date of creation. */}
-        <div className="flex flex-col items-end justify-between w-[40%]">
-          {/* For Date of creation */}
-          <div>{note.createdAt}</div>
+        {/* Note Content with overflow handling */}
+        <div className="text-sm text-gray-300 break-words overflow-hidden">
+          <p className="whitespace-pre-wrap">
+            {note.content.length > 100 ? `${note.content.substring(0, 100)}...` : note.content}
+          </p>
+        </div>
 
-          {/* For Buttons */}
-          <div className="flex gap-4">
-            <button
-              className="border-[1px] rounded text-sm px-[3px] p-[1px]"
-            >
-              <Link  to={`/?NoteID=${note._id}`}>
-                Edit
-              </Link>
-            </button>
-            <button
-              className="border-[1px] rounded text-sm px-[3px] p-[1px]"
-              onClick={() => handleDelete(note?._id)}
-            >
-              Delete
-            </button>
-            <button
-              className="border-[1px] rounded text-sm px-[3px] p-[1px]"
-              onClick={handleShare}
-            >
-              Share
-            </button>
-            <button
-              className="border-[1px] rounded text-sm px-[3px] p-[1px]"
-            >
-              <Link to={`/notes/${note._id}`}>
-                View
-              </Link>
-            </button>
-            <button
-              className="border-[1px] rounded text-sm px-[3px] p-[1px]"
-              onClick={() => handleCopy(note.content)}
-            >
-              Copy
-            </button>
-          </div>
+        {/* Action Buttons */}
+        <div className="flex gap-2 mt-3">
+          <button className="px-3 py-1 bg-neutral-800 text-sm rounded hover:bg-neutral-700">
+            <Link to={`/?NoteID=${note._id}`}>Edit</Link>
+          </button>
+          <button
+            className="px-3 py-1 bg-neutral-800 text-sm rounded hover:bg-neutral-700"
+            onClick={() => handleDelete(note._id)}
+          >
+            Delete
+          </button>
+          <button
+            className="px-3 py-1 bg-neutral-800 text-sm rounded hover:bg-neutral-700"
+            onClick={handleShare}
+          >
+            Share
+          </button>
+          <button className="px-3 py-1 bg-neutral-800 text-sm rounded hover:bg-neutral-700">
+            <Link to={`/notes/${note._id}`}>View</Link>
+          </button>
+          <button
+            className="px-3 py-1 bg-neutral-800 text-sm rounded hover:bg-neutral-700"
+            onClick={() => handleCopy(note.content)}
+          >
+            Copy
+          </button>
         </div>
       </div>
 
       {/* Sharing Options */}
-      <div
-        className={`h-[50px] w-[880px] border-[1px] border-white rounded-full p-2 flex items-center justify-between ${isActive ? "block" : "hidden"}`}
-      >
+      {isActive && (
+        <div className="h-[50px] w-full border-t border-gray-700 p-2 flex items-center justify-between">
+          {/* Share Icons */}
+          <div className="flex gap-2">
+            <TwitterShareButton url={shareURL} title={title}>
+              <TwitterIcon size={32} round />
+            </TwitterShareButton>
+            <EmailShareButton url={shareURL} title={title}>
+              <EmailIcon size={32} round />
+            </EmailShareButton>
+            <WhatsappShareButton url={shareURL} title={title}>
+              <WhatsappIcon size={32} round />
+            </WhatsappShareButton>
+          </div>
 
-        {/* Share Icons */}
-        <div className="flex gap-2">
+          {/* Share Link with Copy Button */}
+          <div className="h-[30px] w-[300px] bg-black pl-3 rounded-full flex justify-between items-center">
+            <input
+              className="h-[30px] bg-transparent text-white"
+              type="text"
+              value={shareURL}
+              disabled
+            />
+            <button
+              className="size-[20px] bg-white rounded-full flex justify-center items-center"
+              onClick={(e) => {
+                e.preventDefault();
+                navigator.clipboard.writeText(shareURL);
+                toast.success("Link copied to Clipboard");
+              }}
+            >
+              <img
+                src="https://img.icons8.com/?size=100&id=86216&format=png&color=000000"
+                alt=""
+                className="size-[15px]"
+              />
+            </button>
+          </div>
 
-          <TwitterShareButton url={shareURL} title={title}>
-            <TwitterIcon size={32} round />
-          </TwitterShareButton>
-          
-          <EmailShareButton url={shareURL} title={title}>
-            <EmailIcon size={32} round />
-          </EmailShareButton>
-          
-          <WhatsappShareButton url={shareURL} title={title}>
-            <WhatsappIcon size={32} round />
-          </WhatsappShareButton>
-        
-        </div>
-
-        {/* Share Link with Copy Button */}
-        <div className="h-[30px] w-[300px] bg-black pl-3 rounded-full flex justify-between items-center">
-          <input
-            className="h-[30px]"
-            type="text"
-            value={`http://localhost:5173/notes/${note._id}`}
-            disabled
-          />
-          <button
-            className="size-[20px] bg-white rounded-full flex justify-center items-center"
-            onClick={(e) => {
-              e.preventDefault;
-              navigator.clipboard.writeText(
-                `http://localhost:5173/notes/${note._id}`
-              );
-              toast.success("Link copied to Clipboard");
-            }}
-          >
+          {/* Close Button */}
+          <button onClick={() => setisActive(false)}>
             <img
-              src="https://img.icons8.com/?size=100&id=86216&format=png&color=000000"
-              alt=""
-              className="size-[15px]"
+              src="https://img.icons8.com/?size=100&id=79023&format=png&color=FFFFFF"
+              className="size-[30px]"
             />
           </button>
         </div>
-
-        {/* Close Button */}
-        <button onClick={() => setisActive(false)}>
-          <img
-            src="https://img.icons8.com/?size=100&id=79023&format=png&color=FFFFFF"
-            className="size-[30px]"
-          />
-        </button>
-
-      </div>
-
+      )}
     </div>
   );
 };
