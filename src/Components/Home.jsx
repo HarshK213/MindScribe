@@ -20,7 +20,14 @@ const Home = () => {
                 title:title,
                 content:Text ,
                 _id:NoteID || Date.now().toString(36),
-                createdAt:new Date().toISOString()
+                createdAt:new Date().toLocaleString('en-GB', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    hour12: true,
+                  })
             }
         
             if(NoteID){

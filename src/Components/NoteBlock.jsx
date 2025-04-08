@@ -18,6 +18,8 @@ const NoteBlock = ({ note }) => {
   const dispatch = useDispatch();
   const [isActive, setisActive] = useState(false);
 
+  console.log(typeof(new Date(note.createdAt)))
+
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
     toast.success("Copied to Clipboard");
@@ -37,7 +39,7 @@ const NoteBlock = ({ note }) => {
         {/* Note Header with timestamp */}
         <div className="flex justify-between items-start mb-2">
           <h2 className="text-xl font-bold break-words max-w-[70%]">{note.title}</h2>
-          <span className="text-xs text-gray-400">{note.createdAt}</span>
+          <span className="text-xs text-gray-400">{(note.createdAt)}</span>
         </div>
 
         {/* Note Content with overflow handling */}
