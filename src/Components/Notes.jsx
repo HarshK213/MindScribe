@@ -43,7 +43,7 @@ const Notes = () => {
                     filteredData.map(
                         (note) => {
                             return(
-                                <div key={note._id}>
+                                <div key={note._id}> {/*make sure to use _id as key*/}
                                     <NoteBlock note={note} ShareActive={ShareActive} setShareActive={setShareActive}/>
                                 </div>
                             )
