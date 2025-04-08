@@ -76,6 +76,17 @@ const Home = () => {
                 <textarea 
                     value={Text}
                     onChange={(e) => setText(e.target.value)}
+                    onKeyDown={(e) => {
+                        if(e.shiftKey && e.key === "Enter"){
+                            e.preventDefault();
+                            if(title){
+                                createNotes();
+                                setTimeout(() => navigate("/notes"), 300); // Adding delay for animation
+                            }else{
+                                alert("Note must have Title");
+                            }
+                        }
+                    }}
                     placeholder="Write your Notes"
                     className="w-[80%] bg-black rounded-2xl p-3"
                     rows={20}
@@ -94,7 +105,7 @@ const Home = () => {
                     className="min-w-[150px] rounded-full px-2 bg-amber-900"
                 >
                     {
-                        NoteID ? 'Update existing Note' : 'Create new Notes'
+                        NoteID ? 'Update existing Note' : 'Create new Note'
                     }
                 </button>
             </div>            
